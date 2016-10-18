@@ -11,7 +11,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
-	"../random"
+	"github.com/foolin/goutils/random"
 )
 
 

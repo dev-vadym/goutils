@@ -1,11 +1,11 @@
 package random
 
 import (
-	"../uuid"
 	"strings"
 	"time"
 	"math/rand"
 	//"log"
+	"github.com/foolin/goutils/uuid"
 )
 
 var ran = rand.New(rand.NewSource(time.Now().UnixNano()))
