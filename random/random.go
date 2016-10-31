@@ -19,6 +19,17 @@ func Uid() string {
 	return strings.Replace(objUuid.String(), "-", "", -1)
 }
 
+
+func TimeUid(isAfter ...bool) string {
+	subTime := time.Now().Format("20060102150405")
+	subUid := Uid()[:18]
+	if len(isAfter) > 0  && isAfter[0]{
+		return subUid + subTime
+	}
+	return subTime + subUid
+}
+
+
 //RandomNumber random number between min and max ([min, max]), include max
 func Number(min, max int) int {
 	if min > max{
@@ -164,11 +175,21 @@ func Array(num, min, max int) []int {
 
 //是否命中概率，0-1之间的小数点
 func Hit(rate float32) bool  {
+	rateInt := int(rate * 100)
+	return HitInt(rateInt)
+}
+
+// HitInt 是否命中概率，1-100之间的小数点
+func HitInt(rateInt int) bool  {
+	if rateInt < 1{
+		return false
+	}
+	if rateInt >= 100{
+		return true
+	}
 	isHit := false
-	//命中
-	rateVal := int(rate * 100)
 	rdVal := Number(1, 100)
-	if rdVal <= rateVal{
+	if rdVal <= rateInt{
 		isHit = true
 	}
 	return isHit
