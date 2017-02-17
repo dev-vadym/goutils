@@ -10,6 +10,11 @@ func EnJson(v interface{}) (string, error) {
 	return string(data), err
 }
 
+func EnJsonStr(v interface{}) string {
+	jsonstr, _ := EnJson(v)
+	return jsonstr
+}
+
 func DeJson(data string, v interface{}) error {
 	return json.Unmarshal([]byte(data), v)
 }

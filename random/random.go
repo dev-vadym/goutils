@@ -29,6 +29,9 @@ func TimeUid(isAfter ...bool) string {
 	return subTime + subUid
 }
 
+func Rand() *rand.Rand {
+	return ran
+}
 
 //RandomNumber random number between min and max ([min, max]), include max
 func Number(min, max int) int {

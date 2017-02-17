@@ -106,7 +106,7 @@ func AesEncrypt(origData, key []byte) ([]byte, error) {
 	}
 	blockSize := block.BlockSize()
 	iv := key[:blockSize]
-	fmt.Println("AesEncrypt key:", string(key), "|", string(iv))
+	//fmt.Println("AesEncrypt key:", string(key), "|", string(iv))
 	origData = Pkcs5Padding(origData, blockSize)
 	blockMode := cipher.NewCBCEncrypter(block, iv)
 	crypted := make([]byte, len(origData))

@@ -86,6 +86,13 @@ func HumanFloat(value float64, decimal int) string {
 	return fmt.Sprintf("%v%v", strval, unit)
 }
 
+func FloatFixed(value float64, decimal int) string {
+	strval := fmt.Sprintf("%.*f",  decimal, value)
+	//去掉后面的0,例如：5.00变成5
+	strval = strings.TrimRight(strings.TrimRight(strval, "0"), ".")
+	return strval
+}
+
 func Round(val float64) int {
 	return int(Floor(val + 0.5))
 }
