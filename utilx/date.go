@@ -39,3 +39,17 @@ func FormatDate(date time.Time) string {
 func FormatTime(date time.Time) string {
 	return date.Local().Format("2006-01-02 15:04:05")
 }
+
+var weekydays = [...]string{
+	"星期日",
+	"星期一",
+	"星期二",
+	"星期三",
+	"星期四",
+	"星期五",
+	"星期六",
+}
+
+func WeekdayName(w time.Weekday) string {
+	return weekydays[w]
+}
