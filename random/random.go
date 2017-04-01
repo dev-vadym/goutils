@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	//"log"
 	"github.com/foolin/goutils/uuid"
+	"fmt"
 )
 
 var ran = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -19,14 +20,18 @@ func Uid() string {
 	return strings.Replace(objUuid.String(), "-", "", -1)
 }
 
-
 func TimeUid(isAfter ...bool) string {
 	subTime := time.Now().Format("20060102150405")
 	subUid := Uid()[:18]
-	if len(isAfter) > 0  && isAfter[0]{
+	if len(isAfter) > 0  && isAfter[0] {
 		return subUid + subTime
 	}
 	return subTime + subUid
+}
+
+func TimeId() string {
+	subTime := time.Now().Format("20060102150405")
+	return fmt.Sprintf("%v%v%v", subTime, ran.Int63(), ran.Int63())[0:32]
 }
 
 func Rand() *rand.Rand {
@@ -35,7 +40,7 @@ func Rand() *rand.Rand {
 
 //RandomNumber random number between min and max ([min, max]), include max
 func Number(min, max int) int {
-	if min > max{
+	if min > max {
 		return -1
 	}
 	return ran.Intn(max - min + 1) + min
@@ -70,24 +75,24 @@ func Alphabet(length int) string {
 
 //Weight
 func WeightIndex(weightArray []int) int {
-	type Scope struct{
+	type Scope struct {
 		Idx int
 		Min int
 		Max int
 	}
-	sum := 0	//总数
-	min := 0	//上标
-	idx := -1	//索引
+	sum := 0        //总数
+	min := 0        //上标
+	idx := -1        //索引
 	scopeList := make([]Scope, 0)
-	for key, val := range weightArray{
+	for key, val := range weightArray {
 		sum += val //下标
 		item := Scope{key, min, sum}
 		scopeList = append(scopeList, item)
 		min = sum + 1
 	}
 	rdValue := Number(1, sum);
-	for _, v := range scopeList{
-		if rdValue >= v.Min && rdValue <= v.Max{
+	for _, v := range scopeList {
+		if rdValue >= v.Min && rdValue <= v.Max {
 			idx = v.Idx
 			break
 		}
@@ -100,12 +105,12 @@ func WeightIndex(weightArray []int) int {
 func WeightKey(weightMap map[interface{}]int) interface{} {
 	keyList := make([]interface{}, 0)
 	weightList := make([]int, 0)
-	for key, val := range weightMap{
+	for key, val := range weightMap {
 		keyList = append(keyList, key)
 		weightList = append(weightList, val)
 	}
 	idx := WeightIndex(weightList)
-	if idx < 0{
+	if idx < 0 {
 		return nil
 	}
 	return keyList[idx]
@@ -114,15 +119,15 @@ func WeightKey(weightMap map[interface{}]int) interface{} {
 //Weight
 func WeightKeys(weightMap map[interface{}]int, num int) []interface{} {
 	retList := make([]interface{}, 0)
-	if len(weightMap) <= num{
-		for key, _ := range retList{
+	if len(weightMap) <= num {
+		for key, _ := range retList {
 			retList = append(retList, key)
 		}
 		return retList
 	}
-	for i := 0; i < num; i++{
+	for i := 0; i < num; i++ {
 		retKey := WeightKey(weightMap)
-		if retKey != nil{
+		if retKey != nil {
 			retList = append(retList, retKey)
 			delete(weightMap, retKey)
 		}
@@ -131,19 +136,19 @@ func WeightKeys(weightMap map[interface{}]int, num int) []interface{} {
 }
 
 func UniqueArray(num, min, max int) []int {
-	if num <= 0{
+	if num <= 0 {
 		return []int{}
 	}
 	sub := max - min + 1
 	ret := make([]int, 0)
 	m := make(map[int]bool, num)
-	if num >= sub{
+	if num >= sub {
 		num = sub
-		for i := min; i <= max; i++{
+		for i := min; i <= max; i++ {
 			ret = append(ret, i)
 		}
 		//随机打乱顺序
-		for i := 0; i < num * 2; i++{
+		for i := 0; i < num * 2; i++ {
 			idx1 := Number(1, num) - 1
 			idx2 := Number(1, num) - 1
 			ret[idx1], ret[idx2] = ret[idx2], ret[idx1]
@@ -152,12 +157,12 @@ func UniqueArray(num, min, max int) []int {
 	}
 	for {
 		v := Number(min, max)
-		if _, ok := m[v]; ok{
+		if _, ok := m[v]; ok {
 			continue
 		}
 		m[v] = true
 		ret = append(ret, v)
-		if len(ret) >= num{
+		if len(ret) >= num {
 			break
 		}
 	}
@@ -169,7 +174,7 @@ func Array(num, min, max int) []int {
 	for {
 		v := Number(min, max)
 		ret = append(ret, v)
-		if len(ret) >= num{
+		if len(ret) >= num {
 			break
 		}
 	}
@@ -177,22 +182,22 @@ func Array(num, min, max int) []int {
 }
 
 //是否命中概率，0-1之间的小数点
-func Hit(rate float32) bool  {
+func Hit(rate float32) bool {
 	rateInt := int(rate * 100)
 	return HitInt(rateInt)
 }
 
 // HitInt 是否命中概率，1-100之间的小数点
-func HitInt(rateInt int) bool  {
-	if rateInt < 1{
+func HitInt(rateInt int) bool {
+	if rateInt < 1 {
 		return false
 	}
-	if rateInt >= 100{
+	if rateInt >= 100 {
 		return true
 	}
 	isHit := false
 	rdVal := Number(1, 100)
-	if rdVal <= rateInt{
+	if rdVal <= rateInt {
 		isHit = true
 	}
 	return isHit
